@@ -1,1 +1,8 @@
 typer
+requests
+beautifulsoup4
+socket
+json
+python-dotenv
+networkx
+matplotlib

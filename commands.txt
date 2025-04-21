@@ -4,6 +4,16 @@ python main.py crack hash --<HASH> --<WORDLIST>
 
 python main.py decode base64 <TEXT>
     python main.py decode base64 aGVsbG8gd29ybGQ=
+    python main.py decode base64 aGVsbG8gd29ybGQ=
+    python main.py decode hex 48656c6c6f
+    python main.py decode url hallo%20welt
+    python main.py decode js \x48\x69
+    python main.py decode rot13 Uryyb
+    python main.py decode binary 01001000 01101001
+    python main.py decode morse .... . .-.. .-.. --- / .-- --- .-. .-.. -..
+    python main.py decode test aGVsbG8gd29ybGQ=
+    python main.py decode test 48656c6c6f
+    python main.py decode test .... . .-.. .-.. --- / .-- --- .-. .-.. -..
 
 
 python main.py regex search <PATTERN> <TEXT>
