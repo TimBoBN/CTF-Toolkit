@@ -1,4 +1,3 @@
-### cli/cracker.py
 import typer
 import sys
 import os
@@ -11,11 +10,19 @@ from core.cracker import crack_hash
 app = typer.Typer()
 
 @app.command()
-def hash(hash: str, wordlist: str):
+def hash(hash: str, wordlist: str, algorithm: str = typer.Option("md5", "-a", "--algorithm", help="Der zu verwendende Hash-Algorithmus")):
     """
-    Crackt einfachen MD5 Hash gegen eine Wordlist.
-    Du musst nur den Namen der Wordlist angeben, z. B. 'rockyou.txt'
+    Crackt einen Hash gegen eine Wordlist mit einem angegebenen Algorithmus.
+    Der Benutzer muss den Hash-Algorithmus und den Namen der Wordlist angeben, z. B. 'rockyou.txt'.
+    Standardmäßig wird MD5 verwendet.
     """
+    # Debug-Ausgabe zur Überprüfung
+    typer.echo(f"[🔍] Hash: {hash}")
+    typer.echo(f"[🔍] Wordlist: {wordlist}")
+    typer.echo(f"[🔍] Algorithmus: {algorithm}")
+    
     wordlist_path = os.path.join("wordlist", wordlist)
-    typer.echo(f"[🔍] Analysiere Hash: {hash} mit Wordlist: {wordlist_path}")
-    crack_hash(hash, wordlist_path)
+    typer.echo(f"[🔍] Wordlist-Pfad: {wordlist_path}")
+    
+    # Funktionsaufruf
+    crack_hash(hash, wordlist_path, algorithm)

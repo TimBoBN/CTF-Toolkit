@@ -1,5 +1,5 @@
-python main.py crack hash --<HASH> --<WORDLIST>
-    python main.py crack --hash 5f4dcc3b5aa765d61d8327deb882cf99 rockyou.txt
+python main.py crack hash <HASH> <WORDLIST> -a/--algorithm <hashtype>
+    python main.py crack hash 5f4dcc3b5aa765d61d8327deb882cf99 rockyou.txt -a md5
 
 
 python main.py decode base64 <TEXT>

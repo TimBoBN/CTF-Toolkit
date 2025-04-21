@@ -1,17 +1,24 @@
-### core/cracker.py
-def crack_hash(hash_value: str, wordlist_path: str):
+import hashlib
+
+def crack_hash(hash_value: str, wordlist_path: str, algorithm: str):
     try:
         with open(wordlist_path, 'r', encoding='utf-8', errors='ignore') as f:
             for line in f:
                 password = line.strip()
-                if hash_value == fake_md5(password):
+                if hash_value == hash_password(password, algorithm):
                     print(f"[✅] Erfolgreich: {password}")
                     return
         print("[❌] Kein Passwort gefunden.")
     except FileNotFoundError:
         print(f"[⚠️] Wordlist nicht gefunden: {wordlist_path}")
 
-
-def fake_md5(password: str):
-    import hashlib
-    return hashlib.md5(password.encode()).hexdigest()
+def hash_password(password: str, algorithm: str):
+    """
+    Generiert den Hash für ein gegebenes Passwort und den gewünschten Algorithmus.
+    """
+    try:
+        hash_object = hashlib.new(algorithm, password.encode())
+        return hash_object.hexdigest()
+    except ValueError:
+        print(f"[⚠️] Ungültiger Algorithmus: {algorithm}")
+        return None
