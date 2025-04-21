@@ -1,0 +1,17 @@
+python main.py crack hash --<HASH> --<WORDLIST>
+    python main.py crack --hash 5f4dcc3b5aa765d61d8327deb882cf99 rockyou.txt
+
+
+python main.py decode base64 <TEXT>
+    python main.py decode base64 aGVsbG8gd29ybGQ=
+
+
+python main.py regex search <PATTERN> <TEXT>
+    python main.py regex search "\d{4,}" "Die Zahl ist 1234 im Jahr 2025"
+
+
+python main.py hash create <TEXT> [--algo <ALGORITHMUS>]
+    python main.py hash create passwort
+    python main.py hash create geheim --algo sha256
+
+
