@@ -25,3 +25,26 @@ python main.py hash create <TEXT> [--algo <ALGORITHMUS>]
     python main.py hash create geheim --algo sha256
 
 
+python main.py recon subdomains <domain>
+python main.py recon whoisinfo <domain>
+python main.py recon scrape <domain>
+python main.py recon portscan <domain>
+python main.py recon dns <domain>
+python main.py recon robots <domain>
+python main.py recon headers <domain>
+python main.py recon subdomains example.com
+python main.py recon shodan <ip_or_domain>
+python main.py recon headers example.com
+python main.py recon technologies example.com
+
+
+# Portscan
+python main.py vulnscan scan -t example.com -p 1-1024
+
+# CMS-Erkennung
+python main.py vulnscan cms -u http://example.com
+
+# LFI-Test
+python main.py vulnscan lfi -u http://example.com/index.php?file=
+
+python3 main.py sqli -u http://example.com/item.php
