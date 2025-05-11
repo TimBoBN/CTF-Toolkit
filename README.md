@@ -104,7 +104,7 @@ ctf-toolkit/
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/your-username/ctf-toolkit.git
+git clone https://github.com/timbobn/ctf-toolkit.git
 cd ctf-toolkit
 pip install -r requirements.txt
 ```
