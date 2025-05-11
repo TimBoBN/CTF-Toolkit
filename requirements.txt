@@ -7,3 +7,12 @@ python-dotenv
 python-whois
 shodan
 dnspython
+urllib
+dotenv
+os
+html
+base64
+hashlib
+datetime
+pathlib
+re
