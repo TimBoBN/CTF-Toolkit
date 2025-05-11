@@ -8,10 +8,10 @@ app = typer.Typer()
 @app.command("auto")
 def auto_scan(file: Path):
     if not file.exists():
-        typer.echo(f"[❌] Datei nicht gefunden: {file}")
+        typer.echo(f"[❌] File not found: {file}")
         raise typer.Exit()
 
-    typer.echo(f"[🔍] Auto-Scan gestartet: {file.name}\n")
+    typer.echo(f"[🔍] Auto-scan started: {file.name}\n")
     content = file.read_text(encoding="utf-8", errors="ignore")
 
     for line in content.splitlines():
@@ -23,4 +23,3 @@ def auto_scan(file: Path):
             result = func(line)
             if result and result != line:
                 typer.echo(f"[✅ {name}] {line} → {result}")
-

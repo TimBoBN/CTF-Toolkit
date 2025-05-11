@@ -3,50 +3,50 @@ from core.vulnscaner import scan_ports, detect_cms, basic_lfi_test, basic_sqli_t
 import os
 from dotenv import load_dotenv
 
-# .env-Datei laden
+# Load the .env file
 load_dotenv()
 
 app = typer.Typer()
 
-# Hole die Umgebungsvariablen aus der .env-Datei oder setze Standardwerte
+# Get environment variables from the .env file or set default values
 default_url = os.getenv("DEFAULT_URL", "http://example.com")
 default_target = os.getenv("DEFAULT_TARGET", "example.com")
 
 @app.command()
 def scan(
-    target: str = typer.Option(default_target, "-t", "--target", help="Die IP oder Domain, die gescannt werden soll."),
-    ports: str = typer.Option("1-1024", "-p", "--ports", help="Bereich der zu scannenden Ports (Standard: 1-1024)")
+    target: str = typer.Option(default_target, "-t", "--target", help="The IP or domain to be scanned."),
+    ports: str = typer.Option("1-1024", "-p", "--ports", help="Range of ports to scan (default: 1-1024)")
 ):
     """
-    Scannt die offenen Ports eines Hosts mit Nmap.
+    Scans the open ports of a host using Nmap.
     """
     scan_ports(target, ports)
 
 @app.command()
-def cms(url: str = typer.Option(default_url, "-u", "--url", help="Die URL der Website, die auf ein CMS überprüft werden soll.")):
+def cms(url: str = typer.Option(default_url, "-u", "--url", help="The URL of the website to check for a CMS.")):
     """
-    Erkennt das CMS einer Website.
+    Detects the CMS of a website.
     """
     detect_cms(url)
 
 @app.command()
-def lfi(url: str = typer.Option(default_url, "-u", "--url", help="Die URL der Website, die auf LFI-Schwachstellen überprüft werden soll.")):
+def lfi(url: str = typer.Option(default_url, "-u", "--url", help="The URL of the website to check for LFI vulnerabilities.")):
     """
-    Führt grundlegende LFI-Tests durch.
+    Performs basic LFI tests.
     """
     basic_lfi_test(url)
 
 @app.command()
-def sqli(url: str = typer.Option(default_url, "-u", "--url", help="Die URL der Website, die auf SQLi-Schwachstellen überprüft werden soll.")):
+def sqli(url: str = typer.Option(default_url, "-u", "--url", help="The URL of the website to check for SQLi vulnerabilities.")):
     """
-    Führt grundlegende SQLi-Tests durch.
+    Performs basic SQLi tests.
     """
     basic_sqli_test(url)
 
 @app.command()
-def xss(url: str = typer.Option(default_url, "-u", "--url", help="Die URL der Website, die auf XSS-Schwachstellen überprüft werden soll.")):
+def xss(url: str = typer.Option(default_url, "-u", "--url", help="The URL of the website to check for XSS vulnerabilities.")):
     """
-    Führt grundlegende XSS-Tests durch.
+    Performs basic XSS tests.
     """
     basic_xss_test(url)
 

@@ -6,10 +6,10 @@ app = typer.Typer()
 @app.command()
 def search(pattern: str, text: str):
     """
-    Sucht mit einem Regex nach einem Muster im Text.
+    Searches for a pattern in the text using a regex.
     """
     matches = re.findall(pattern, text)
     if matches:
-        typer.echo(f"[🔍] Gefunden: {matches}")
+        typer.echo(f"[🔍] Found: {matches}")
     else:
-        typer.echo("[❌] Keine Übereinstimmungen gefunden.")
+        typer.echo("[❌] No matches found.")

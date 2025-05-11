@@ -5,43 +5,43 @@ import re
 
 def scan_ports(target: str, ports: str = "1-1024") -> None:
     """
-    Scannt offene Ports auf einem Zielhost mit Nmap.
-    :param target: Ziel-Host (IP oder Domain)
-    :param ports: Bereich der zu scannenden Ports (Standard: 1-1024)
+    Scans open ports on a target host using Nmap.
+    :param target: Target host (IP or domain)
+    :param ports: Range of ports to scan (default: 1-1024)
     """
     nm = nmap.PortScanner()
-    print(f"[🔍] Scanne Ports für {target} auf den Ports: {ports}...")
+    print(f"[🔍] Scanning ports for {target} on ports: {ports}...")
 
     try:
         nm.scan(target, ports)
         for host in nm.all_hosts():
             print(f"[🌐] Host: {host} ({nm[host].hostname()})")
             for proto in nm[host].all_protocols():
-                print(f"  Protokoll: {proto}")
+                print(f"  Protocol: {proto}")
                 lport = nm[host][proto].keys()
                 for port in lport:
                     state = nm[host][proto][port]["state"]
                     print(f"    Port: {port} - Status: {state}")
     except Exception as e:
-        print(f"[⚠️] Fehler beim Scannen von {target}: {e}")
+        print(f"[⚠️] Error scanning {target}: {e}")
 
 def detect_cms(url: str) -> None:
     """
-    Ermittelt das CMS einer Webseite basierend auf Headern und Meta-Tags.
-    :param url: URL der zu scannenden Webseite
+    Detects the CMS of a website based on headers and meta tags.
+    :param url: URL of the website to scan
     """
     try:
         response = requests.get(url)
         cms = None
 
-        # Überprüfen der Header auf bekannte CMS-Bezeichner
+        # Check headers for known CMS identifiers
         if 'X-Powered-By' in response.headers:
             if 'WordPress' in response.headers['X-Powered-By']:
                 cms = 'WordPress'
             elif 'Joomla' in response.headers['X-Powered-By']:
                 cms = 'Joomla'
         
-        # Überprüfen der Meta-Tags auf CMS-spezifische Informationen
+        # Check meta tags for CMS-specific information
         if not cms and 'content' in response.text:
             if "wp-content" in response.text:
                 cms = 'WordPress'
@@ -49,17 +49,17 @@ def detect_cms(url: str) -> None:
                 cms = 'Joomla'
 
         if cms:
-            print(f"[📋] Erkanntes CMS: {cms}")
+            print(f"[📋] Detected CMS: {cms}")
         else:
-            print("[⚠️] Kein CMS erkannt.")
+            print("[⚠️] No CMS detected.")
     
     except requests.RequestException as e:
-        print(f"[⚠️] Fehler beim Abrufen der Webseite: {e}")
+        print(f"[⚠️] Error fetching the website: {e}")
 
 def basic_lfi_test(url: str) -> None:
     """
-    Testet eine Website auf grundlegende LFI-Schwachstellen.
-    :param url: Die zu testende URL
+    Tests a website for basic LFI vulnerabilities.
+    :param url: The URL to test
     """
     payloads = [
         "../../../../etc/passwd",
@@ -71,14 +71,14 @@ def basic_lfi_test(url: str) -> None:
         try:
             response = requests.get(test_url)
             if "root:x" in response.text:
-                print(f"[⚠️] LFI-Schwachstelle gefunden bei {test_url}")
+                print(f"[⚠️] LFI vulnerability found at {test_url}")
         except requests.RequestException:
             pass
 
 def basic_sqli_test(url: str) -> None:
     """
-    Testet eine Website auf grundlegende SQLi-Schwachstellen.
-    :param url: Die zu testende URL
+    Tests a website for basic SQLi vulnerabilities.
+    :param url: The URL to test
     """
     payloads = [
         "' OR 1=1 --",
@@ -90,14 +90,14 @@ def basic_sqli_test(url: str) -> None:
         try:
             response = requests.get(test_url)
             if "SQL" in response.text or "error" in response.text:
-                print(f"[⚠️] SQLi-Schwachstelle gefunden bei {test_url}")
+                print(f"[⚠️] SQLi vulnerability found at {test_url}")
         except requests.RequestException:
             pass
 
 def basic_xss_test(url: str) -> None:
     """
-    Testet eine Website auf grundlegende XSS-Schwachstellen.
-    :param url: Die zu testende URL
+    Tests a website for basic XSS vulnerabilities.
+    :param url: The URL to test
     """
     payloads = [
         "<script>alert('XSS')</script>",
@@ -108,6 +108,6 @@ def basic_xss_test(url: str) -> None:
         try:
             response = requests.get(test_url)
             if payload in response.text:
-                print(f"[⚠️] XSS-Schwachstelle gefunden bei {test_url}")
+                print(f"[⚠️] XSS vulnerability found at {test_url}")
         except requests.RequestException:
             pass

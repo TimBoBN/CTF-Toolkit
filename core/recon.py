@@ -14,13 +14,13 @@ api = shodan.Shodan(SHODAN_API_KEY)
 
 
 def get_subdomains(domain):
-    print(f"[🌐] Suche Subdomains für: {domain} über crt.sh")
+    print(f"[🌐] Searching for subdomains for: {domain} via crt.sh")
     url = f"https://crt.sh/?q=%25.{domain}&output=json"
 
     try:
         response = requests.get(url, timeout=10)
         if response.status_code != 200:
-            print(f"[❌] Fehler bei crt.sh: {response.status_code}")
+            print(f"[❌] Error with crt.sh: {response.status_code}")
             return []
 
         data = response.json()
@@ -36,73 +36,73 @@ def get_subdomains(domain):
         return sorted(subdomains)
 
     except requests.exceptions.Timeout:
-        print("[⚠️] Timeout beim Abrufen der Subdomains.")
+        print("[⚠️] Timeout while fetching subdomains.")
     except requests.exceptions.RequestException as e:
-        print(f"[⚠️] Anfragenfehler: {e}")
+        print(f"[⚠️] Request error: {e}")
     except Exception as e:
-        print(f"[⚠️] Fehler bei der Subdomain-Suche: {e}")
+        print(f"[⚠️] Error during subdomain search: {e}")
     return []
 
 def get_whois_info(domain):
-    print(f"[🧾] WHOIS-Abfrage für: {domain}")
+    print(f"[🧾] WHOIS query for: {domain}")
     try:
         info = whois.whois(domain)
         if isinstance(info, dict):
             return {key: value for key, value in info.items()}
         else:
-            print("[⚠️] WHOIS-Daten konnten nicht im erwarteten Format abgerufen werden.")
+            print("[⚠️] WHOIS data could not be retrieved in the expected format.")
             return {}
     except whois.parser.PywhoisError:
-        print("[⚠️] Fehler beim Verarbeiten der WHOIS-Daten.")
+        print("[⚠️] Error processing WHOIS data.")
     except Exception as e:
-        print(f"[⚠️] WHOIS-Abfrage fehlgeschlagen: {e}")
+        print(f"[⚠️] WHOIS query failed: {e}")
     return {}
 
 
 def scrape_page(url):
     """
-    Lädt den HTML-Inhalt der Seite herunter und durchsucht sie nach bestimmten Informationen.
-    In diesem Fall suchen wir nach allen Links auf der Seite.
+    Downloads the HTML content of the page and searches for specific information.
+    In this case, we are looking for all links on the page.
     """
-    print(f"[🌐] Durchsuche die Seite: {url}")
+    print(f"[🌐] Scraping the page: {url}")
 
     try:
         response = requests.get(url, timeout=10)
         if response.status_code != 200:
-            print(f"[❌] Fehler beim Abrufen der Seite: {response.status_code}")
+            print(f"[❌] Error fetching the page: {response.status_code}")
             return []
 
-        # BeautifulSoup verwenden, um die Seite zu parsen
+        # Use BeautifulSoup to parse the page
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        # Alle Links auf der Seite extrahieren
+        # Extract all links on the page
         links = [a['href'] for a in soup.find_all('a', href=True)]
 
-        # Du kannst hier nach anderen Tags oder Inhalten suchen, z.B. <title>, <h1>, <p> usw.
+        # You can search for other tags or content here, e.g., <title>, <h1>, <p>, etc.
         titles = soup.find_all(['h1', 'h2', 'h3', 'p'])
 
-        print(f"[📄] Gefundene Links auf der Seite:")
+        print(f"[📄] Links found on the page:")
         for link in links:
             print(link)
 
-        print(f"[📄] Gefundene Titel und Absätze:")
+        print(f"[📄] Titles and paragraphs found:")
         for title in titles:
             print(title.get_text(strip=True))
 
         return links
 
     except requests.exceptions.Timeout:
-        print("[⚠️] Timeout beim Abrufen der Seite.")
+        print("[⚠️] Timeout while fetching the page.")
     except requests.exceptions.RequestException as e:
-        print(f"[⚠️] Anfragenfehler: {e}")
+        print(f"[⚠️] Request error: {e}")
     except Exception as e:
-        print(f"[⚠️] Fehler beim Scraping der Seite: {e}")
+        print(f"[⚠️] Error scraping the page: {e}")
     return []
 
 
 # DNS Resolver
 def resolve_dns(domain):
-    print(f"[🔍] DNS-Auflösung für: {domain}")
+    print(f"[🔍] Resolving DNS for: {domain}")
     records = {}
     try:
         # A-Records
@@ -132,12 +132,12 @@ def resolve_dns(domain):
         
         return records
     except Exception as e:
-        print(f"[⚠️] Fehler bei der DNS-Auflösung: {e}")
+        print(f"[⚠️] Error during DNS resolution: {e}")
         return {}
 
-# Portscanner (Verwenden von socket)
+# Portscanner (Using socket)
 def port_scan(domain, start_port=1, end_port=1024):
-    print(f"[🔐] Scanne Ports für: {domain}")
+    print(f"[🔐] Scanning ports for: {domain}")
     open_ports = []
     for port in range(start_port, end_port + 1):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -149,34 +149,34 @@ def port_scan(domain, start_port=1, end_port=1024):
     
     return open_ports
 
-# Robots.txt und Header
+# Robots.txt and Header
 def get_robots_txt(url):
     robots_url = url + "/robots.txt"
-    print(f"[📄] Abrufen der robots.txt für: {robots_url}")
+    print(f"[📄] Fetching robots.txt for: {robots_url}")
     try:
         response = requests.get(robots_url)
         if response.status_code == 200:
             return response.text
         else:
-            print(f"[⚠️] Keine robots.txt gefunden oder Fehler: {response.status_code}")
+            print(f"[⚠️] No robots.txt found or error: {response.status_code}")
     except Exception as e:
-        print(f"[⚠️] Fehler beim Abrufen der robots.txt: {e}")
+        print(f"[⚠️] Error fetching robots.txt: {e}")
     return ""
 
 def get_headers(url):
-    print(f"[🔑] Abrufen der HTTP-Header für: {url}")
+    print(f"[🔑] Fetching HTTP headers for: {url}")
     try:
         response = requests.head(url, timeout=10)
         return response.headers
     except requests.exceptions.RequestException as e:
-        print(f"[⚠️] Fehler beim Abrufen der Header: {e}")
+        print(f"[⚠️] Error fetching headers: {e}")
     return {}
 
 def get_technologies(url):
-    print(f"[🛠️] Technologien auf der Seite erkennen: {url}")
+    print(f"[🛠️] Detecting technologies on the page: {url}")
     try:
         response = requests.get(url, timeout=10)
-        # Beispiel: Überprüfung auf bekannte Technologien anhand von HTTP-Headern
+        # Example: Check for known technologies based on HTTP headers
         technologies = {}
         if 'X-Powered-By' in response.headers:
             technologies['X-Powered-By'] = response.headers['X-Powered-By']
@@ -184,15 +184,15 @@ def get_technologies(url):
             technologies['Server'] = response.headers['Server']
         return technologies
     except requests.exceptions.RequestException as e:
-        print(f"[⚠️] Fehler beim Erkennen der Technologien: {e}")
+        print(f"[⚠️] Error detecting technologies: {e}")
     return {}
 
-# Shodan-Integration
+# Shodan Integration
 def shodan_info(ip_or_domain):
-    print(f"[🔎] Abrufen von Shodan-Informationen für: {ip_or_domain}")
+    print(f"[🔎] Fetching Shodan information for: {ip_or_domain}")
     try:
         result = api.host(ip_or_domain)
         return result
     except shodan.APIError as e:
-        print(f"[⚠️] Fehler bei der Shodan-Abfrage: {e}")
+        print(f"[⚠️] Error during Shodan query: {e}")
     return {}

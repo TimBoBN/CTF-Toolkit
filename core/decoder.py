@@ -86,9 +86,7 @@ def decode_morse(s: str) -> str | None:
         return None
 
 
-
-
-# ✅ Decoder Map für Auto-Scan
+# ✅ Decoder map for auto-scan
 
 decoders = {
     "Base64": decode_base64,
