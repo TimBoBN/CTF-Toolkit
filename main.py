@@ -6,7 +6,7 @@ import os
 # Add root dir to sys.path
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-from cli import cracker, decoder, regex, hasher, scanner, url_scanner, recon,vulnscaner
+from cli import cracker, decoder, regex, hasher, scanner, url_scanner, recon, vulnscaner
 
 app = typer.Typer()
 
